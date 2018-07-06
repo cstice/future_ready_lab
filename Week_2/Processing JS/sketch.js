@@ -13,6 +13,7 @@ function randomColor(){
     return [random(256), random(256), random(256)];
     
 }
+var backgroundColor;
 
 function Circle(x,y, size, color, xSpeed, ySpeed){
     this.xCoor = x;
@@ -32,9 +33,54 @@ function createCircles(){
     }
 }
 
+function Rectangle(x,y,w,h,color, xSpeed, ySpeed){
+    this.xCoor = x;
+    this.yCoor = y;
+    this.width = w;
+    this.height = h;
+    this.color = color || randomColor();
+    this.xSpeed = xSpeed || 18;
+    this.ySpeed = ySpeed || 15;
+}
+
+
+function Triangle(x1, y1, x2, y2, color, xSpeed, ySpeed){
+    this.x1Coor = x1;
+    this.y1Coor =y1;
+    this.x2Coor = x2;
+    this.y2Coor = y2;
+    this.x3coor = abs(x1 - x2);
+    this.y3Coor = abs(y1 - y2);
+    this.color = randomColor();
+    this.xSpeed = xSpeed || 18;
+    this.ySpeed = ySpeed || 15;
+}
+var shapeList = [];
+
+function createShape(){
+
+    var numShapes = random([2,5,9,16]);
+    for (var i = 0; i < numShapes; i++){
+        shapeList.push(new Shape(random(width),random(height),50));
+        switch (random([1,2,3])){
+            case 1:
+                shapeList.push(new Circle(random(width),random(height), 50));
+                break;
+            case 2: 
+                shapeList.push(new Rectangle(random(width), random(height), random(100), random(100)));
+                break;
+            case 3:
+                shapeList.push(new Triangle(random(100),random(100), random(100), random(100)));
+                break;
+        }
+    }
+}
+
+
 function setup(){
+    backgroundColor = randomColor()
     createCanvas(parseInt(prompt("Enter canvas size width ")), parseInt(prompt("Enter canvas size length"))); //makes user put in canvas size 
-    background(210,255,46);
+    background(backgroundColor);
     frameRate(800);
     createCircles();
 }
@@ -42,7 +88,7 @@ function setup(){
 
 
 function draw(){
-    clear();
+    background(backgroundColor);
     for(var i = 0; i<circleList.length; i++){
         fill(circleList[i].color);
     ellipse(circleList[i].xCoor, circleList[i].yCoor, circleList[i].diameter);
